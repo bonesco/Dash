@@ -20,9 +20,11 @@ import {
   X,
   Trash2,
   ListFilter,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
+  Play
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { VideoPreview } from './VideoPreview';
 
 // --- FIREBASE IMPORTS AND SETUP ---
 // Global variables provided by the Canvas environment
@@ -465,6 +467,7 @@ export default function LinearCommandApp() {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [detailTask, setDetailTask] = useState(null); // Task object for detail view
   const [showSettings, setShowSettings] = useState(false);
+  const [showVideoPreview, setShowVideoPreview] = useState(false);
 
   // Settings state (in-memory for this version)
   const [settings, setSettings] = useState({
@@ -1031,6 +1034,14 @@ export default function LinearCommandApp() {
 
           <div className="flex items-center gap-4">
             <button
+                onClick={() => setShowVideoPreview(true)}
+                className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-white/5 transition-colors text-gray-500 hover:text-indigo-400"
+                title="Watch promo video"
+            >
+                <Play size={12} />
+                <span>Video</span>
+            </button>
+            <button
                 onClick={() => setViewMode(prev => prev === 'archive' ? 'focus' : 'archive')}
                 className={`flex items-center gap-1.5 px-2 py-1 rounded hover:bg-white/5 transition-colors ${viewMode === 'archive' ? 'text-indigo-400 bg-indigo-500/10' : 'text-gray-500'}`}
                 title={viewMode === 'archive' ? "Switch to Focus/Active view" : "Switch to Archive/History view"}
@@ -1088,6 +1099,11 @@ export default function LinearCommandApp() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* VIDEO PREVIEW */}
+      {showVideoPreview && (
+        <VideoPreview onClose={() => setShowVideoPreview(false)} />
+      )}
 
     </div>
   );
